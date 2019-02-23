@@ -39,12 +39,6 @@ vignettes/*.pdf
 *.knit.md
 .Rproj.user
 
-# Output data
-*.Rda
-*.pdf
-*.csv
-*.html
-
 
 # System files
 *.DS_Store
