@@ -15,7 +15,7 @@ p_load(data.table,xts,lubridate,Quandl,here)
 
 ### Chapter 1 : Review of data.table
 
-* Well done! Selecting columns with names stored in a vector is a powerful tool to know.  
+* Selecting columns with names stored in a vector is a powerful tool to know.  
 
 * get() - takes in string, and returns the values inside object
 
@@ -25,7 +25,7 @@ p_load(data.table,xts,lubridate,Quandl,here)
 
 * Creating and selecting columns with variables means you can pass new data through your code without needing to copy and paste common operations.  
 
-> Complete add_interaction(), which should take two column names and produce a new column that holds the result of multiplying the two columns together.
+* Complete add_interaction(), which should take two column names and produce a new column that holds the result of multiplying the two columns together.
 
 ```{r}
 vec <- c("asdasd","sdsds","sdsds")
@@ -39,9 +39,9 @@ add_interaction <- function(someDT, col1, col2){
 
 ```
 
->scale_by_10() should select a column, multiply it by 10, and store the result in a new column. Use this function to scale the engine temperature column by 10. Call the new column "temp10".
+* scale_by_10() should select a column, multiply it by 10, and store the result in a new column. Use this function to scale the engine temperature column by 10. Call the new column "temp10".
 
-> You just took the first step towards implementing a fast feature-engineering library! The fact that the := operator changes the data.table in place also greatly reduces the risk that you'll blow out your memory.
+> The fact that the := operator changes the data.table in place also greatly reduces the risk that you'll blow out your memory.
 
 
 ```{r}
@@ -332,17 +332,6 @@ add_growth_rates <- function(DT, cols, ndiff){
 }
 
 
-```
-
-
-**EDA and model building**
-
-* Function to get correlation matrix from a data.table
-
-![](`r here("feature-selection-strategies.jpeg")`)
-
-```{r}
-
 # Function to get correlation matrix from a data.table
 corrmat_from_dt <- function(DT, cols){
     # Subset to the requested columns
@@ -356,12 +345,18 @@ corrmat_from_dt <- function(DT, cols){
 
 ```
 
+
+
+![](`r here("feature-selection-strategies.jpeg")`)
+
+
+
 # Summary
 
-Overall a very basic and superficial course. No depth, nothing on rolling joins, handling of missing time periods, etc. Few new things I learnt as summarised below :
+Overall a very basic and superficial course. No depth, nothing on rolling joins, handling of missing time periods, etc. Some content that I found interesting is summarised below :
 
 * use of get() to extract the values inside columns as objects and LHS of := inside bracets tells R to evaluate this object and use its value as a column name
-    + someDT[, (new_col_name) := get(col_name) ^ 2 ] 
+    + **someDT[, (new_col_name) := get(col_name) ^ 2 ]** 
     + The new_col_name is a vector hence should be within brackets ()  
 
 * Use of functions inside DT, lapply is not always needed  
@@ -374,9 +369,31 @@ Overall a very basic and superficial course. No depth, nothing on rolling joins,
 * a new column called "hour_end" that holds an indicator for the hour bucket each date-time falls into. 
     + seconds_in_an_hour <- 60 * 60
     + passengerDT[, hour_end := floor(obs_time_in_seconds / seconds_in_an_hour)]
-    
-* **When DT is passed to a function, it is passed as a reference and not as a copy of object**
 
-* Implemented the add_diff and add_growth_rate and correlation matrix functions
+* Find numeric columns  
+    + **num_cols <- DT[, sapply(.SD, is.numeric)]**
+    
+* When DT is passed to a function, it is passed as a reference and not as a copy of object
+
+* return(invisible(NULL)) : invisible() function can be useful when it is desired to have functions return values which can be assigned, but which do not print when they are not assigned.
+
+* Use of stargazer() package for model evaluations
+
+* Use of **Reduce() to rbind multiple lists**
+    + mergedDT <- Reduce(
+         f = function(x, y){  
+           merge(x, y, all = TRUE, by = "close_date")
+         },  
+           x = list(aluminumDT, copperDT, cobaltDT,              nickelDT, tinDT))
+         
+
+
+* Implementation of following functions
+    + add_diff()
+    + add_growth_rate()
+    + correlation matrix from DT  
+    
+    
+***
 
 
