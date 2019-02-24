@@ -247,12 +247,12 @@ iotDT &lt;- data.table(
 )
 head(iotDT)</code></pre>
 <pre><code>##              timestamp engine_temp ambient_temp
-## 1: 2016-04-19 00:00:00   0.5164121  -0.35978997
-## 2: 2016-04-19 01:00:00   1.4384508  -0.07396767
-## 3: 2016-04-19 02:00:00   0.1808907  -1.36798720
-## 4: 2016-04-19 03:00:00  -0.3312118   1.82181897
-## 5: 2016-04-19 04:00:00  -1.6534193   1.29798452
-## 6: 2016-04-19 05:00:00   1.0636375   0.65503764</code></pre>
+## 1: 2016-04-19 00:00:00   1.0914134  -0.21755812
+## 2: 2016-04-19 01:00:00  -0.9733288  -1.81518651
+## 3: 2016-04-19 02:00:00   0.7470943  -0.02666309
+## 4: 2016-04-19 03:00:00   2.6683306  -0.55677264
+## 5: 2016-04-19 04:00:00  -0.6643133   0.70644155
+## 6: 2016-04-19 05:00:00  -1.7425456   0.29652726</code></pre>
 <p><strong>Coercing from xts</strong></p>
 <blockquote>
 <p>Brief overview of xts : Unlike a data.frame, a flat data representation with no concept of special-purpose columns, an xts object is a complex object that separates out the main time component, or index, from all other observations.</p>
@@ -381,26 +381,30 @@ corrmat_from_dt &lt;- function(DT, cols){
 <h1>Summary</h1>
 <p>Overall a very basic and superficial course. No depth, nothing on rolling joins, handling of missing time periods, etc. Some content that I found interesting is summarised below :</p>
 <ul>
-<li>use of get() to extract the values inside columns as objects and LHS of := inside bracets tells R to evaluate this object and use its value as a column name
+<li>use of get() to extract the values inside columns as objects
 <ul>
-<li><strong>someDT[, (new_col_name) := get(col_name) ^ 2 ]</strong></li>
-<li>The new_col_name is a vector hence should be within brackets ()</li>
+<li>LHS of := inside brackets tells R to evaluate this object and use its value as a column name</li>
+<li><strong>someDT[, (new_col_name) := get(col_name) ^ 2 ]</strong><br />
+<br></li>
 </ul></li>
 <li><p>Use of functions inside DT, lapply is not always needed</p></li>
 <li>Widowing and aggregation using xts
 <ul>
 <li>Window after 00:45:00 - nickelXTS[‘2018-01-01 00:45:00/’]</li>
 <li>10-minute aggregations of nickel prices - xts::to.minutes10(nickelXTS)</li>
-<li>aggregations at the 1-minute frequency - xts::to.minutes(nickelXTS)</li>
+<li>aggregations at the 1-minute frequency - xts::to.minutes(nickelXTS)<br />
+<br></li>
 </ul></li>
 <li>a new column called “hour_end” that holds an indicator for the hour bucket each date-time falls into.
 <ul>
 <li>seconds_in_an_hour &lt;- 60 * 60</li>
-<li>passengerDT[, hour_end := floor(obs_time_in_seconds / seconds_in_an_hour)]</li>
+<li>passengerDT[, hour_end := floor(obs_time_in_seconds / seconds_in_an_hour)]<br />
+<br></li>
 </ul></li>
 <li>Find numeric columns
 <ul>
-<li><strong>num_cols &lt;- DT[, sapply(.SD, is.numeric)]</strong></li>
+<li><strong>num_cols &lt;- DT[, sapply(.SD, is.numeric)]</strong><br />
+<br></li>
 </ul></li>
 <li><p>When DT is passed to a function, it is passed as a reference and not as a copy of object</p></li>
 <li><p>return(invisible(NULL)) : invisible() function can be useful when it is desired to have functions return values which can be assigned, but which do not print when they are not assigned.</p></li>
@@ -409,7 +413,8 @@ corrmat_from_dt &lt;- function(DT, cols){
 <ul>
 <li>mergedDT &lt;- Reduce( f = function(x, y){<br />
 merge(x, y, all = TRUE, by = “close_date”) },<br />
-x = list(aluminumDT, copperDT, cobaltDT, nickelDT, tinDT))</li>
+x = list(aluminumDT, copperDT, cobaltDT, nickelDT, tinDT))<br />
+<br></li>
 </ul></li>
 <li>Implementation of following functions
 <ul>

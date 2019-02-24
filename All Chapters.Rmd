@@ -355,24 +355,24 @@ corrmat_from_dt <- function(DT, cols){
 
 Overall a very basic and superficial course. No depth, nothing on rolling joins, handling of missing time periods, etc. Some content that I found interesting is summarised below :
 
-* use of get() to extract the values inside columns as objects and LHS of := inside bracets tells R to evaluate this object and use its value as a column name
-    + **someDT[, (new_col_name) := get(col_name) ^ 2 ]** 
-    + The new_col_name is a vector hence should be within brackets ()  
-
+* use of get() to extract the values inside columns as objects
+    + LHS of := inside brackets tells R to evaluate this object and use its value as a column name
+    + **someDT[, (new_col_name) := get(col_name) ^ 2 ]**   
+<br>
 * Use of functions inside DT, lapply is not always needed  
 
 * Widowing and aggregation using xts
     + Window after 00:45:00 - nickelXTS['2018-01-01 00:45:00/']
     + 10-minute aggregations of nickel prices - xts::to.minutes10(nickelXTS)
     + aggregations at the 1-minute frequency - xts::to.minutes(nickelXTS)  
-    
+<br>
 * a new column called "hour_end" that holds an indicator for the hour bucket each date-time falls into. 
     + seconds_in_an_hour <- 60 * 60
-    + passengerDT[, hour_end := floor(obs_time_in_seconds / seconds_in_an_hour)]
-
+    + passengerDT[, hour_end := floor(obs_time_in_seconds / seconds_in_an_hour)]  
+<br>
 * Find numeric columns  
-    + **num_cols <- DT[, sapply(.SD, is.numeric)]**
-    
+    + **num_cols <- DT[, sapply(.SD, is.numeric)]**  
+<br>
 * When DT is passed to a function, it is passed as a reference and not as a copy of object
 
 * return(invisible(NULL)) : invisible() function can be useful when it is desired to have functions return values which can be assigned, but which do not print when they are not assigned.
@@ -384,10 +384,8 @@ Overall a very basic and superficial course. No depth, nothing on rolling joins,
          f = function(x, y){  
            merge(x, y, all = TRUE, by = "close_date")
          },  
-           x = list(aluminumDT, copperDT, cobaltDT,              nickelDT, tinDT))
-         
-
-
+           x = list(aluminumDT, copperDT, cobaltDT,              nickelDT, tinDT))  
+<br>
 * Implementation of following functions
     + add_diff()
     + add_growth_rate()
